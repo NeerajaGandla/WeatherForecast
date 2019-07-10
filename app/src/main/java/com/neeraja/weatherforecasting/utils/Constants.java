@@ -8,4 +8,6 @@ public class Constants {
     public static final String ERROR_PARSING = "Error Parsing Data";
     public static final String DATA_INVALID = "Data may not be valid or server has issues";
     public static final int NO_OF_DAYS = 7;
+    public static final String SIMPLE_DATE_FORMAT_REVERSE = "yyyy-MM-dd";
+    public static final String displayDateFormat = "dd MMM yyyy";
 }

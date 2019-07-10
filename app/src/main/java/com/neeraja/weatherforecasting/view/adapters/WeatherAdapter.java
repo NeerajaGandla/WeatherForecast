@@ -1,6 +1,7 @@
 package com.neeraja.weatherforecasting.view.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,13 @@ import android.widget.TextView;
 
 import com.neeraja.weatherforecasting.R;
 import com.neeraja.weatherforecasting.model.WeatherDayModel;
+import com.neeraja.weatherforecasting.utils.Constants;
+import com.neeraja.weatherforecasting.utils.Utils;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObjectHolder> {
     private ArrayList<WeatherDayModel> list;
@@ -47,16 +53,26 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         WeatherDayModel data = list.get(position);
+        String dateStr = data.getWeatherDate();
+        Date date = null;
+        if (Utils.isValidString(dateStr)) {
+            date = Utils.getDate(dateStr, Constants.SIMPLE_DATE_FORMAT_REVERSE);
+        }
 
-        holder.dateTv.setText(data.getWeatherDate()); //change later
+        if (date != null) {
+            if (Utils.isToday(date.getTime())) {
+                holder.dateTv.setText("Today");
+            } else if (Utils.isTomorrow(date)) {
+                holder.dateTv.setText("Tomorrow");
+            } else {
+                String displayDateStr = Utils.getTime(date,Constants.displayDateFormat);
+                holder.dateTv.setText(displayDateStr);
+            }
+        }
+
         holder.conditionTextTv.setText(data.getConditionText());
-        holder.temperatureRangeTv.setText(data.getMinTempCentigrade() + "/" + data.getMaxTempCentigrade());
-
-//        if (data.getConditionCode() == 1003) {
-//            holder.conditionImgIv.setImageResource(View.VISIBLE);
-//        } else {
-//            holder.conditionImgIv.setImageResource(View.INVISIBLE);
-//        }
+        holder.temperatureRangeTv.setText(((int) data.getMinTempCentigrade()) + "\u2103"
+                + "/" + ((int) data.getMaxTempCentigrade()) + "\u2103");
 
     }
 

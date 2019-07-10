@@ -3,22 +3,52 @@ package com.neeraja.weatherforecasting.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.neeraja.weatherforecasting.BuildConfig;
 
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.zip.GZIPInputStream;
 
 public class Utils {
     private static Gson gson = new Gson();
+
+    public static String getTime(Date date, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
+
+    public static boolean isTomorrow(Date date) {
+        DateTime tomorrow = new DateTime().withTimeAtStartOfDay().plusDays(1);
+        DateTime dateTime = new DateTime(date);
+        DateTime inputDay = dateTime.withTimeAtStartOfDay();
+        return inputDay.isEqual(tomorrow);
+    }
+
+    public static boolean isToday(long millis) {
+        return DateUtils.isToday(millis);
+    }
+
+    public static boolean isValidString(String str) {
+        if (str != null) {
+            str = str.trim();
+            if (str.length() > 0)
+                return true;
+        }
+        return false;
+    }
 
     public static boolean getConnectivityStatus(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
@@ -53,6 +83,18 @@ public class Utils {
             Log.d(Constants.LOG_TAG, msg);
         }
     }
+
+    public static Date getDate(String time, String format) {
+        Date date = null;
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        try {
+            date = (Date) formatter.parseObject(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
 
     public static Object parseResp(InputStream is, Class<?> classOfT)
             throws Exception {

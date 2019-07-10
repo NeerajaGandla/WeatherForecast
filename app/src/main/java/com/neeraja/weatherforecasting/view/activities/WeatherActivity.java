@@ -93,7 +93,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherActivit
 
     @Override
     public void setCurrentData(WeatherModel weatherModel) {
-        currentTemperatureTv.setText(weatherModel.getCurrentTempCentigrade()+ getString(R.string.centigrade));
+        currentTemperatureTv.setText((int)weatherModel.getCurrentTempCentigrade()+ getString(R.string.centigrade));
         currentLocationTv.setText(weatherModel.getLocationName());
     }
 
