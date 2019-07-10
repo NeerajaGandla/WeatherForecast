@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="title_activity_weather">WeatherActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="centigrade">\u2103</string>
+    <string name="api_key">5f283aa4df724e9e9aa110830190807</string>
+</resources>
