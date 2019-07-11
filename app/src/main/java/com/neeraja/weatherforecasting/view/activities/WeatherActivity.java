@@ -10,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,9 +33,11 @@ public class WeatherActivity extends AppCompatActivity implements WeatherActivit
     private RecyclerView weatherRv;
     private Context mContext;
     private WeatherAdapter weatherAdapter;
-    private TextView currentTemperatureTv, currentLocationTv;
+    private TextView currentTemperatureTv, currentLocationTv, errorMessageTv;
     private ProgressBar progressBar;
     private Location location;
+    private Button retryBtn;
+    private LinearLayout errorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,10 @@ public class WeatherActivity extends AppCompatActivity implements WeatherActivit
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         progressBar = (ProgressBar) findViewById(R.id.loading);
+        errorLayout = (LinearLayout) findViewById(R.id.layout_error);
+        errorMessageTv = (TextView) findViewById(R.id.tv_error_msg);
+        retryBtn = (Button) findViewById(R.id.btn_retry);
+        retryBtn.setOnClickListener(listener);
 
         weatherPresenter = new WeatherPresenter(this);
         weatherRv = (RecyclerView) findViewById(R.id.rv_weather);
@@ -54,30 +62,45 @@ public class WeatherActivity extends AppCompatActivity implements WeatherActivit
         currentTemperatureTv = (TextView) findViewById(R.id.tv_current_temperature);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                weatherPresenter.onClick(WeatherActivity.this);
-            }
-        });
+        fab.setOnClickListener(listener);
 
-        onWeatherRequest();
+        weatherPresenter.onWeatherPageLaunch();
     }
+
+    private View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.fab:
+                    weatherPresenter.onClick(WeatherActivity.this);
+                    break;
+                case R.id.btn_retry:
+                    weatherPresenter.onRetryClicked();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     public void showLoading() {
         weatherRv.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
         progressBar.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE);
         weatherRv.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onWeatherRequest() {
+        errorLayout.setVisibility(View.GONE);
+        weatherRv.setVisibility(View.VISIBLE);
         if (Utils.getConnectivityStatus(mContext)) {
             showLoading();
             String apiKey = getString(R.string.api_key);
@@ -88,12 +111,14 @@ public class WeatherActivity extends AppCompatActivity implements WeatherActivit
                 q = location.getLatitude() + "," + location.getLongitude();
             }
             weatherPresenter.onWeatherRequest(apiKey, q);
+        } else {
+            setErrorView(getString(R.string.internet_connection_err_msg));
         }
     }
 
     @Override
     public void setCurrentData(WeatherModel weatherModel) {
-        currentTemperatureTv.setText((int)weatherModel.getCurrentTempCentigrade()+ getString(R.string.centigrade));
+        currentTemperatureTv.setText((int) weatherModel.getCurrentTempCentigrade() + getString(R.string.centigrade));
         currentLocationTv.setText(weatherModel.getLocationName());
     }
 
@@ -102,5 +127,15 @@ public class WeatherActivity extends AppCompatActivity implements WeatherActivit
         weatherAdapter = new WeatherAdapter((ArrayList<WeatherDayModel>) weatherDayModelList);
         weatherRv.setAdapter(weatherAdapter);
         hideLoading();
+    }
+
+    @Override
+    public void setErrorView(String message) {
+        weatherRv.setVisibility(View.GONE);
+        if (progressBar.getVisibility() == View.VISIBLE) {
+            progressBar.setVisibility(View.GONE);
+        }
+        errorMessageTv.setText(message);
+        errorLayout.setVisibility(View.VISIBLE);
     }
 }

@@ -7,4 +7,5 @@
     <color name="black">#000000</color>
     <color name="greyishBlue">#bdccd9</color>
     <color name="darkGreyBlue">#576b81</color>
+    <color name="red">#FF5252</color>
 </resources>

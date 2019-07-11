@@ -30,6 +30,7 @@ public class SplashActivity extends AppCompatActivity implements SplashActivityC
     private SplashPresenter splashPresenter;
     private static final int PERMISSION_CALLBACK_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
+    public static final int SPLASH_DELAY = 2000;
     String[] permissionsRequired = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -43,7 +44,7 @@ public class SplashActivity extends AppCompatActivity implements SplashActivityC
         splashPresenter = new SplashPresenter(this);
 
         RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotate.setDuration(5000);
+        rotate.setDuration(SPLASH_DELAY);
         rotate.setInterpolator(new LinearInterpolator());
 
         ImageView image = (ImageView) findViewById(R.id.iv_splash);

@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.neeraja.weatherforecasting.R;
 import com.neeraja.weatherforecasting.model.WeatherDayModel;
 import com.neeraja.weatherforecasting.model.WeatherModel;
 import com.neeraja.weatherforecasting.utils.ApiUtils;
@@ -76,13 +77,19 @@ public class WeatherAsyncTask extends AsyncTask {
                         }
                         weatherDayModels.add(weatherDayModel);
                     }
+                } else {
+                    Globals.lastErrMsg = Constants.N0_DATA;
                 }
                 weatherModel.setWeatherDayModelList(weatherDayModels);
+            } else {
+                Globals.lastErrMsg = Constants.N0_DATA;
             }
         } catch (CustomException e) {
             e.printStackTrace();
+            Globals.lastErrMsg = Constants.SOMETHING_WENT_WRONG;
         } catch (JSONException e) {
             e.printStackTrace();
+            Globals.lastErrMsg = Constants.ERROR_PARSING;
         }
         return weatherModel;//return the response WeatherModel here
     }

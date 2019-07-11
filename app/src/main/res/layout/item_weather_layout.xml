@@ -15,15 +15,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:padding="5dp"
+            android:padding="@dimen/padding_small"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="@dimen/medium_text"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iv_condition_img"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/icon_width"
+            android:layout_height="@dimen/icon_height"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center" />
 
@@ -32,18 +32,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:padding="5dp"
+            android:padding="@dimen/padding_small"
             android:textAlignment="textEnd"
             android:textColor="@color/darkGreyBlue"
-            android:textSize="18sp" />
+            android:textSize="@dimen/medium_text" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_condition_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="@dimen/padding_small"
         android:textColor="@color/darkGreyBlue"
-        android:textSize="14sp" />
+        android:textSize="@dimen/smaller_text" />
 
 </LinearLayout>

@@ -10,4 +10,6 @@ public class Constants {
     public static final int NO_OF_DAYS = 7;
     public static final String SIMPLE_DATE_FORMAT_REVERSE = "yyyy-MM-dd";
     public static final String displayDateFormat = "dd MMM yyyy";
+    public static final String N0_DATA = "No Data Available";
+    public static final String SOMETHING_WENT_WRONG = "Something Went Wrong";
 }

@@ -4,6 +4,7 @@ import com.neeraja.weatherforecasting.asynctasks.WeatherAsyncTask;
 import com.neeraja.weatherforecasting.contract.WeatherActivityContract;
 import com.neeraja.weatherforecasting.model.WeatherDayModel;
 import com.neeraja.weatherforecasting.model.WeatherModel;
+import com.neeraja.weatherforecasting.utils.Globals;
 import com.neeraja.weatherforecasting.utils.Utils;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class WeatherPresenter implements WeatherActivityContract.Presenter {
     }
 
     @Override
-    public void onWeatherRequest(String apiKey,String q) {
+    public void onWeatherRequest(String apiKey, String q) {
         //call the asynctask here and set the adapter and hide loading
         WeatherAsyncTask weatherAsyncTask = new WeatherAsyncTask(apiKey, q);
         WeatherModel weatherModel = null;
@@ -37,7 +38,21 @@ public class WeatherPresenter implements WeatherActivityContract.Presenter {
             List<WeatherDayModel> weatherDayModels = weatherModel.getWeatherDayModelList();
             if (Utils.isValidArrayList((ArrayList<?>) weatherDayModels)) {
                 mView.setWeatherData(weatherDayModels);
+            } else if (Utils.isValidString(Globals.lastErrMsg)) {
+                mView.setErrorView(Globals.lastErrMsg);
             }
+        } else if (Utils.isValidString(Globals.lastErrMsg)) {
+            mView.setErrorView(Globals.lastErrMsg);
         }
+    }
+
+    @Override
+    public void onRetryClicked() {
+        mView.onWeatherRequest();
+    }
+
+    @Override
+    public void onWeatherPageLaunch() {
+        mView.onWeatherRequest();
     }
 }

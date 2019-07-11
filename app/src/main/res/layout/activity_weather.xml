@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/white"
     tools:context=".view.activities.WeatherActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -41,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textStyle="bold"
-                    android:textSize="36sp"
+                    android:textSize="@dimen/heading_text"
                     android:textColor="@color/white"/>
                 <TextView
                     android:id="@+id/tv_current_location"
@@ -49,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textStyle="bold"
-                    android:textSize="26sp"
+                    android:textSize="@dimen/sub_heading_text"
                     android:textColor="@color/white"/>
             </LinearLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
