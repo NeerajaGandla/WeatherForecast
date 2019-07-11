@@ -101,7 +101,9 @@ public class WeatherActivity extends AppCompatActivity implements WeatherActivit
     public void onWeatherRequest() {
         errorLayout.setVisibility(View.GONE);
         weatherRv.setVisibility(View.VISIBLE);
-        if (Utils.getConnectivityStatus(mContext)) {
+        if (!Utils.checkForGPS(mContext)) {
+            setErrorView(getString(R.string.turn_on_gps_msg));
+        } else if (Utils.getConnectivityStatus(mContext)) {
             showLoading();
             String apiKey = getString(R.string.api_key);
             String q = "";

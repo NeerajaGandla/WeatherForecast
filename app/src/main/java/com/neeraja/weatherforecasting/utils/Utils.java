@@ -1,6 +1,7 @@
 package com.neeraja.weatherforecasting.utils;
 
 import android.content.Context;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.format.DateUtils;
@@ -35,6 +36,15 @@ public class Utils {
         DateTime dateTime = new DateTime(date);
         DateTime inputDay = dateTime.withTimeAtStartOfDay();
         return inputDay.isEqual(tomorrow);
+    }
+
+    public static boolean checkForGPS(Context context) {
+        final LocationManager manager = (LocationManager) context
+                .getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+            return false;
+        else
+            return true;
     }
 
     public static boolean isToday(long millis) {
