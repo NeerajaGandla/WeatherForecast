@@ -9,6 +9,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        FontsOverride.setDefaultFont(getApplicationContext(), "SERIF", "fonts/centurygothic.ttf");
+        FontsOverride.setDefaultFont(getApplicationContext(), "SERIF", "fonts/centurygothic.ttf");
     }
 }
